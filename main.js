@@ -12,6 +12,7 @@ const musica = new Audio('/sons/luna-rise-part-one.mp3')
 const startPauseBT = document.querySelector('#start-pause')
 let tempoDecorridoEmSegundos = 5
 musica.loop = true
+let intervaloID = null
 
 musicaFocoButton.addEventListener('change', () => {
   if (musica.paused) {
@@ -64,24 +65,36 @@ function alterarContexto(contexto) {
 
 
 }
-
-const ContagemRegressiva = () => {
+const contagemRegressiva = () => {
   if (tempoDecorridoEmSegundos > 0) {
-    iniciar();
-    tempoDecorridoEmSegundos -= 1
-    console.log('Temporizador: ' + tempoDecorridoEmSegundos)
+    tempoDecorridoEmSegundos--;
+    console.log('Temporizador: ' + tempoDecorridoEmSegundos);
+  } else {
+    console.log('TEMPO ESGOTADO!!!!!');
+    pararContagem(); 
   }
-  else {
-    console.log('TEMPO ESGOTADO!!!!!')
+};
+
+function iniciarContagem() {
+  if (!intervaloID) {
+    intervaloID = setInterval(contagemRegressiva, 1000);
   }
 }
 
-
-startPauseBT.addEventListener('click', () => {
-  ContagemRegressiva();
-
-})
-
-function iniciar() {
-  const intervaloID = setInterval(ContagemRegressiva, 1000)
+function pararContagem() {
+  if (intervaloID) {
+    clearInterval(intervaloID);
+    intervaloID = null;
+  }
 }
+
+// Função para iniciar ou pausar com base no estado atual
+function iniciarOuPausar() {
+  if (intervaloID) {
+    pararContagem();
+  } else {
+    iniciarContagem();
+  }
+}
+
+startPauseBT.addEventListener('click', iniciarOuPausar);
