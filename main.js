@@ -9,6 +9,9 @@ const texto = document.querySelector('.app__title')
 const botoes = document.querySelectorAll('.app__card-button')
 const musicaFocoButton = document.querySelector('#alternar-musica')
 const musica = new Audio('/sons/luna-rise-part-one.mp3')
+const beepTimer = new Audio ('/sons/beep.mp3')
+const pauseTimer = new Audio ('/sons/pause.mp3')
+const playTimer = new Audio ('/sons/play.wav')
 const startPauseBT = document.querySelector('#start-pause')
 let tempoDecorridoEmSegundos = 5
 musica.loop = true
@@ -85,6 +88,7 @@ function pararContagem() {
   if (intervaloID) {
     clearInterval(intervaloID);
     intervaloID = null;
+    beepTimer.play();
   }
 }
 
@@ -92,8 +96,10 @@ function pararContagem() {
 function iniciarOuPausar() {
   if (intervaloID) {
     pararContagem();
+    pauseTimer.play();
   } else {
     iniciarContagem();
+    playTimer.play();
   }
 }
 
